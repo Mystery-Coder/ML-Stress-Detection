@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Human Stress Prediction</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/InterFaceStyle.css') }}"
+    />
+  </head>
+  <body>
+    <div class="card">
+      <!-- Navbar -->
+      <nav class="navbar">
+        <div class="brand">Stress Predictor</div>
+        <!-- Check if user is logged in, show either login button or user name -->
+        {% if session.get('username') %}
+        <span class="user-name">{{ session.get('username') }}</span>
+        <!-- Logout Button -->
+        <a href="{{ url_for('logout') }}">
+          <button class="login-button">Logout</button>
+        </a>
+        {% else %}
+        <a href="{{ url_for('login') }}">
+          <button class="login-button">Login</button>
+        </a>
+        {% endif %}
+      </nav>
+
+      <!-- Main Section -->
+      <div class="main">
+        <h1>Welcome to Human Stress Prediction</h1>
+        <p>Take the test to find out your stress level.</p>
+
+        <!-- Image container with buttons on left and right -->
+        <div class="image-container">
+          <!-- Left Button -->
+          <a href="{{ url_for('take_test') }}">
+            <button class="take-test-button">Take the Test</button>
+          </a>
+
+          <!-- Stress Illustration Image -->
+          <div class="image-wrapper">
+            <img
+              src="{{ url_for('static', filename='images/stress_image.jpg') }}"
+              alt="Stress Illustration"
+              class="illustration"
+            />
+          </div>
+          <!-- Right Button -->
+          <div class="voice-icon">
+            <!-- Voice Record Icon (microphone) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path
+                d="M12 1C10.3431 1 9 2.34315 9 4V14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14V4C15 2.34315 13.6569 1 12 1ZM13 14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14V4C11 3.44772 11.4477 3 12 3C12.5523 3 13 3.44772 13 4V14ZM6 14H18C18.5523 14 19 14.4477 19 15C19 15.5523 18.5523 16 18 16H6C5.44772 16 5 15.5523 5 15C5 14.4477 5.44772 14 6 14Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing</title>
+    <script>
+        function checkStatus() {
+            fetch('/check_status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "completed") {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        setTimeout(checkStatus, 3000); // Poll every 3 seconds
+                    }
+                })
+                .catch(error => console.error('Error checking status:', error));
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            checkStatus();
+        });
+    </script>
+</head>
+<body>
+    <h1>Processing Your Request</h1>
+    <p>Please wait while we process your request. This may take a few moments...</p>
+</body>
+</html>

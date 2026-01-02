@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Emotion Analysis Result</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/result.css') }}"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<h1>Depression and Emotion Analysis Results</h1>
+				<p class="sub-heading">
+					Detailed analysis of Depression and Emotion.
+				</p>
+			</header>
+
+			<div class="main-content">
+				<section class="emotion-counts">
+					<h2>Emotion Counts</h2>
+					<div class="emotion-list">
+						<div class="emotion-item">
+							<span class="emotion-label">Angry</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['angry'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Disgust</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['disgust'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Happy</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['happy'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Fearful</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['fearful'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Surprised</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['surprised'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Sad</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['sad'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Neutral</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['neutral'] }}</span
+							>
+						</div>
+						<div class="emotion-item">
+							<span class="emotion-label">Calm</span>
+							<span class="emotion-value"
+								>{{ emotion_counts['calm'] }}</span
+							>
+						</div>
+					</div>
+				</section>
+
+				<section class="chart-container">
+					<h2>Emotion Distribution Chart</h2>
+					<img
+						src="{{ url_for('static', filename='graphs/emotion_bar_chart.png') }}"
+						alt="Emotion Bar Chart"
+					/>
+				</section>
+
+				<!-- New Section for Line Chart -->
+				<section class="chart-container">
+					<h2>Emotion Frequency Line Chart</h2>
+					<img
+						src="{{ url_for('static', filename='graphs/emotion_line_chart.png') }}"
+						alt="Emotion Line Chart"
+					/>
+				</section>
+
+				<section class="chart-container">
+					<h2>Depression Frequency Line Chart</h2>
+					<img
+						src="{{ url_for('static', filename='graphs/depression_line_chart.png') }}"
+						alt="Emotion Line Chart"
+					/>
+				</section>
+
+				<section class="chart-container">
+					<h2>Emotion PI Chart</h2>
+					<img
+						src="{{ url_for('static', filename='graphs/em_pi_chart.png') }}"
+						alt="Emotion Line Chart"
+					/>
+				</section>
+			</div>
+		</div>
+	</body>
+</html>

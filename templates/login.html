@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login - Human Stress Prediction</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: "Inter", -apple-system, BlinkMacSystemFont,
+					"Segoe UI", Roboto, sans-serif;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				margin: 0;
+				padding: 20px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+			}
+
+			.login-container {
+				background: rgba(255, 255, 255, 0.95);
+				backdrop-filter: blur(10px);
+				border-radius: 20px;
+				padding: 48px 40px;
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+				width: 100%;
+				max-width: 420px;
+				animation: slideUp 0.5s ease-out;
+			}
+
+			@keyframes slideUp {
+				from {
+					opacity: 0;
+					transform: translateY(30px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.icon-wrapper {
+				width: 80px;
+				height: 80px;
+				margin: 0 auto 24px;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+			}
+
+			.icon-wrapper svg {
+				width: 40px;
+				height: 40px;
+				fill: white;
+			}
+
+			h2 {
+				text-align: center;
+				font-size: 32px;
+				font-weight: 700;
+				color: #2d3748;
+				margin-bottom: 8px;
+			}
+
+			.subtitle {
+				text-align: center;
+				font-size: 14px;
+				color: #718096;
+				margin-bottom: 32px;
+			}
+
+			.input-field {
+				width: 100%;
+				padding: 16px 20px;
+				margin-bottom: 16px;
+				border: 2px solid #e2e8f0;
+				border-radius: 12px;
+				font-size: 15px;
+				font-family: "Inter", sans-serif;
+				background: #f7fafc;
+				transition: all 0.3s ease;
+				outline: none;
+			}
+
+			.input-field:focus {
+				border-color: #667eea;
+				background: white;
+				box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+				transform: translateY(-2px);
+			}
+
+			.input-field::placeholder {
+				color: #a0aec0;
+			}
+
+			.login-button {
+				width: 100%;
+				padding: 16px 24px;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				font-size: 16px;
+				font-weight: 600;
+				border: none;
+				border-radius: 12px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+				font-family: "Inter", sans-serif;
+				margin-top: 8px;
+			}
+
+			.login-button:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+			}
+
+			.login-button:active {
+				transform: translateY(0);
+			}
+
+			.footer {
+				text-align: center;
+				margin-top: 32px;
+				padding-top: 24px;
+				border-top: 1px solid #e2e8f0;
+			}
+
+			.footer p {
+				color: #718096;
+				font-size: 14px;
+				margin-bottom: 0;
+			}
+
+			.footer a {
+				color: #667eea;
+				text-decoration: none;
+				font-weight: 600;
+				transition: color 0.2s ease;
+			}
+
+			.footer a:hover {
+				color: #764ba2;
+				text-decoration: underline;
+			}
+
+			/* Flash message styles */
+			.flash-messages-container {
+				position: fixed;
+				top: 20px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 100%;
+				max-width: 420px;
+				z-index: 9999;
+				padding: 0 20px;
+			}
+
+			.flash-message {
+				padding: 16px 20px;
+				margin-bottom: 12px;
+				border-radius: 12px;
+				font-size: 14px;
+				font-weight: 500;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				animation: slideDown 0.3s ease-out;
+			}
+
+			@keyframes slideDown {
+				from {
+					opacity: 0;
+					transform: translateY(-20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.flash-message.error {
+				background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+				color: #7f1d1d;
+				border: 1px solid #fecaca;
+			}
+
+			.flash-message.success {
+				background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+				color: #065f46;
+				border: 1px solid #a7f3d0;
+			}
+
+			.flash-message.info {
+				background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+				color: #0c5460;
+				border: 1px solid #bee5eb;
+			}
+
+			.flash-message.warning {
+				background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+				color: #856404;
+				border: 1px solid #ffeeba;
+			}
+
+			.close-btn {
+				background: none;
+				border: none;
+				color: inherit;
+				font-size: 24px;
+				font-weight: 300;
+				cursor: pointer;
+				padding: 0;
+				margin-left: 12px;
+				line-height: 1;
+				opacity: 0.7;
+				transition: opacity 0.2s ease;
+			}
+
+			.close-btn:hover {
+				opacity: 1;
+			}
+
+			/* Fade-out animation */
+			@keyframes fadeOut {
+				0% {
+					opacity: 1;
+					transform: translateY(0);
+				}
+				100% {
+					opacity: 0;
+					transform: translateY(-10px);
+				}
+			}
+
+			.fade-out {
+				animation: fadeOut 0.5s forwards;
+			}
+
+			@media (max-width: 480px) {
+				.login-container {
+					padding: 40px 24px;
+					border-radius: 16px;
+				}
+
+				h2 {
+					font-size: 28px;
+				}
+
+				.icon-wrapper {
+					width: 64px;
+					height: 64px;
+					margin-bottom: 20px;
+				}
+
+				.icon-wrapper svg {
+					width: 32px;
+					height: 32px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		{% with messages = get_flashed_messages(with_categories=true) %} {% if
+		messages %}
+		<div class="flash-messages-container">
+			{% set first_message = true %} {% for category, message in messages
+			%} {% if first_message %}
+			<div class="flash-message {{ category }}">
+				<span>{{ message }}</span>
+				<button
+					class="close-btn"
+					onclick="this.parentElement.style.display='none';"
+				>
+					×
+				</button>
+			</div>
+			{% set first_message = false %} {% endif %} {% endfor %}
+		</div>
+		{% endif %} {% endwith %}
+
+		<div class="login-container">
+			<div class="icon-wrapper">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<path
+						d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+					/>
+				</svg>
+			</div>
+			<h2>Welcome Back</h2>
+			<p class="subtitle">Sign in to continue to your account</p>
+			<form method="POST" action="/login">
+				<input
+					class="input-field"
+					type="text"
+					name="username"
+					placeholder="Username"
+					required
+				/>
+				<input
+					class="input-field"
+					type="password"
+					name="password"
+					placeholder="Password"
+					required
+				/>
+				<button class="login-button" type="submit">Login</button>
+			</form>
+			<div class="footer">
+				<p>
+					Don't have an account?
+					<a href="{{ url_for('register') }}">Register here</a>
+				</p>
+			</div>
+		</div>
+
+		<script>
+			window.addEventListener("DOMContentLoaded", function () {
+				const flashMessages =
+					document.querySelectorAll(".flash-message");
+
+				if (flashMessages.length > 1) {
+					// Hide all but the first flash message
+					for (let i = 1; i < flashMessages.length; i++) {
+						flashMessages[i].style.display = "none";
+					}
+				}
+
+				// Set a timeout to remove the message after 5 seconds
+				flashMessages.forEach((message) => {
+					setTimeout(function () {
+						message.classList.add("fade-out");
+						setTimeout(function () {
+							message.style.display = "none";
+						}, 500);
+					}, 2500); // Start fading after 2.5 seconds
+				});
+			});
+		</script>
+	</body>
+</html>

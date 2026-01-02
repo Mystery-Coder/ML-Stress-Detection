@@ -1,0 +1,12 @@
+Flask
+Werkzeug
+Flask-SQLAlchemy
+joblib
+numpy
+matplotlib
+scikit-learn
+tensorflow
+librosa
+soundfile
+pydub
+resampy

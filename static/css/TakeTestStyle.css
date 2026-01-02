@@ -1,0 +1,195 @@
+/* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Navbar Styles */
+.header {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px 30px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  text-decoration: none;
+  color: white;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  padding: 14px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(255, 255, 255, 0.1) inset;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(255, 255, 255, 0.2) inset;
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(255, 255, 255, 0.1) inset;
+}
+
+.button:disabled {
+  background: linear-gradient(135deg, #b0c4de, #a9a9a9);
+  color: #fff;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Card Styles */
+.container {
+  margin-top: 80px; /* Offset for fixed navbar */
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: rgba(116, 202, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  width: 100%;
+  max-width: 750px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: transform 0.3s ease-out;
+}
+
+.question-section {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+h2, h3, p {
+  color: #333;
+}
+
+/* Controls and Buttons */
+.mic-button,
+.play-button {
+  font-size: 18px;
+  padding: 12px 20px;
+  margin: 10px;
+  background-color: #a0f403;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mic-button:disabled,
+.play-button:disabled {
+  background-color: #c7c7c7;
+  cursor: not-allowed;
+}
+
+/* Neumorphism for Buttons */
+.neumorphic-button {
+  background: #e0e0e0;
+  border-radius: 50px;
+  box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+  padding: 14px 24px;
+  color: #333;
+  font-weight: 600;
+  transition: box-shadow 0.3s ease;
+}
+
+.neumorphic-button:hover {
+  box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+}
+
+.neumorphic-button:active {
+  box-shadow: inset 10px 10px 20px #bebebe, inset -10px -10px 20px #ffffff;
+}
+
+/* Progress Bar */
+#progress-container {
+  width: 100%;
+  height: 8px;
+  background-color: #eee;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+#progress-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 5px;
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Flash Message */
+#flash-message {
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  display: none;
+}
+
+.spinner {
+  border: 4px solid transparent;
+  border-top: 4px solid #00bcd4;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

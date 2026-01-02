@@ -1,0 +1,246 @@
+/* CSS Variables for Consistency and Easy Maintenance */
+:root {
+    --primary-color: #5865F2; /* Vibrant blue */
+    --secondary-color: #23272A; /* Neutral dark gray */
+    --accent-color: #57F287; /* Bright green for action buttons */
+    --light-accent: #80FFA5; /* Lighter shade for hover effects */
+    --error-color: #ED4245; /* Bright red for errors */
+    --bg-gradient-start: #202225; /* Subtle dark gradient */
+    --bg-gradient-end: #5865F2;
+    --text-color: #DCDDDE; /* Light text for contrast */
+    --card-bg: #2C2F33; /* Card background for a modern look */
+    --white: #FFFFFF;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+/* Card Styles */
+.card {
+    width: 90%;
+    max-width: 1200px;
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 16px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    color: var(--white);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-bottom: 20px;
+}
+
+.navbar .brand {
+    font-size: clamp(1.5rem, 2.5vw, 1.8rem);
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.navbar .brand:hover {
+    background-color: var(--light-accent);
+    color: var(--secondary-color);
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* Login Button */
+.navbar .login-button {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+.navbar .login-button:hover {
+    background-color: var(--light-accent);
+    color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Main Content */
+.main {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.main h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.main p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: var(--text-color);
+}
+
+/* Take Test Button */
+.take-test-button {
+    background-color: var(--accent-color);
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 15px 40px;
+    margin: 20px 0;
+    transition: var(--transition);
+}
+
+.take-test-button:hover {
+    background-color: var(--light-accent);
+    color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Image Container */
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.illustration {
+    width: 50%;
+    border-radius: var(--border-radius);
+    box-shadow: 0 8px 16px var(--shadow-color);
+    transition: var(--transition);
+}
+
+.illustration:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Voice Icon */
+.voice-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 12px var(--shadow-color);
+    transition: var(--transition);
+}
+
+.voice-icon:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.voice-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: var(--white);
+}
+
+/* Flash Messages */
+.flash-messages {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.flash-message {
+    padding: 20px 30px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.flash-message.success {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+.flash-message.error {
+    background-color: var(--error-color);
+    color: var(--white);
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .image-container {
+        flex-direction: column;
+    }
+
+    .illustration {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar .brand {
+        font-size: 1.2rem;
+    }
+
+    .take-test-button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}
