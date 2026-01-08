@@ -222,15 +222,15 @@ def create_aggregate_visualizations(all_emotions, all_depressions, total_minutes
     ax.axis('off')
     
     summary_text = f"""
-WORKPLACE AUDIO ANALYSIS SUMMARY
+        WORKPLACE AUDIO ANALYSIS SUMMARY
 
-Total Audio Files Analyzed: {num_files}
-Total Duration Analyzed: {total_minutes:.1f} minutes ({total_minutes/60:.2f} hours)
-Total Emotion Predictions: {len(all_emotions)}
-Total Stress Assessments: {len(all_depressions)}
+        Total Audio Files Analyzed: {num_files}
+        Total Duration Analyzed: {total_minutes:.1f} minutes ({total_minutes/60:.2f} hours)
+        Total Emotion Predictions: {len(all_emotions)}
+        Total Stress Assessments: {len(all_depressions)}
 
-EMOTION BREAKDOWN:
-"""
+        EMOTION BREAKDOWN:
+        """
     
     for emotion, count in sorted(emotion_counts.items(), key=lambda x: x[1], reverse=True):
         percentage = (count / len(all_emotions)) * 100
@@ -243,13 +243,13 @@ EMOTION BREAKDOWN:
         summary_text += f"  • {level.upper():12s}: {count:4d} detections ({percentage:5.1f}%)\n"
     
     summary_text += f"""
-WORKPLACE HEALTH INDICATORS:
-  • Positive Emotions: {positive_count} ({positive_count/len(all_emotions)*100:.1f}%)
-  • Negative Emotions: {negative_count} ({negative_count/len(all_emotions)*100:.1f}%)
-  • Neutral State: {neutral_count} ({neutral_count/len(all_emotions)*100:.1f}%)
-  
+        WORKPLACE HEALTH INDICATORS:
+        • Positive Emotions: {positive_count} ({positive_count/len(all_emotions)*100:.1f}%)
+        • Negative Emotions: {negative_count} ({negative_count/len(all_emotions)*100:.1f}%)
+        • Neutral State: {neutral_count} ({neutral_count/len(all_emotions)*100:.1f}%)
+        
 
-"""
+        """
     
     ax.text(0.5, 0.5, summary_text, fontsize=11, family='monospace',
             ha='center', va='center', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))

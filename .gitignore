@@ -208,3 +208,5 @@ __marimo__/
 venv/
 temp_chunks/
 results/
+
+predictions.json
