@@ -43,7 +43,6 @@ class User(db.Model):
     password = db.Column(db.String(200), nullable=False)
 
 
-# Route: Initialize Database
 @app.route('/init_db')
 def init_db():
     """Creates all necessary tables."""
@@ -52,7 +51,6 @@ def init_db():
     return "Database initialized and tables created!"
 
 
-# Route: Home
 @app.route('/')
 def home():
     username = session.get('username')
@@ -67,7 +65,7 @@ def view_users():
     return render_template("view_users.html", users=users)
 
 
-# Route: Login
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -85,7 +83,7 @@ def login():
     return render_template('login.html')
 
 
-# Route: Register
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -114,7 +112,7 @@ def register():
     return render_template('register.html')
 
 
-# Route: Logout
+
 @app.route('/logout', methods=['POST'])
 def logout():
     if 'username' in session:
@@ -130,7 +128,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-# Route: Take Test
+
 @app.route('/take_test', methods=['GET', 'POST'])
 def take_test():
     if 'username' not in session:
@@ -227,15 +225,15 @@ def run_background_tasks():
         folder_2min = "audiofile-step3-2"
         folder_3sec = "audiofile-step3-3"
         
-        # Step 1: Merge uploaded audio files
+      
         print("Step 1: Merging audio files...")
         audio_adder()
         
-        # Step 2: Split audio into chunks
+   
         print("Step 2: Splitting audio into chunks...")
         split_audio_to_folders(file_path, folder_2min, folder_3sec)
         
-        # Step 3: Run ML predictions
+
         print("Step 3: Running ML predictions...")
         class_predictor()
         
@@ -438,6 +436,8 @@ def remove_files_in_folder(folder_path):
         
         deleted_count = 0
         for file_name in os.listdir(folder_path):
+            if file_name == '.gitignore':
+                continue
             file_path = os.path.join(folder_path, file_name)
             if os.path.isfile(file_path):
                 os.remove(file_path)

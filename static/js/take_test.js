@@ -266,10 +266,10 @@ nextButton.addEventListener("click", () => {
 });
 
 debugButton.addEventListener("click", () => {
-	//For debug move to q 40
+	//For debug move to q 42
 
 	if (currentQuestion < questions.length - 1) {
-		currentQuestion = 39;
+		currentQuestion = 41;
 		updateQuestion();
 		resetRecordingState();
 	}

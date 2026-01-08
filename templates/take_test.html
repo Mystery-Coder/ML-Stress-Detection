@@ -1,91 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Questionnaire with Voice Recording</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/TakeTestStyle.css') }}"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <header class="header">
-      <nav class="navbar">
-        <!-- Left button -->
-        <a href="/" class="button">Stress Predict</a>
-        <!-- Right button -->
-        <a href="/logout" class="button">Logout</a>
-      </nav>
-    </header>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Stress Assessment - Voice Recording</title>
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/TakeTestStyle.css') }}"
+		/>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	</head>
+	<body>
+		<!-- Navbar -->
+		<header class="header">
+			<nav class="navbar">
+				<a href="/" class="nav-button">
+					<i class="fas fa-home"></i> Stress Predict
+				</a>
+				<a href="/logout" class="nav-button">
+					<i class="fas fa-sign-out-alt"></i> Logout
+				</a>
+			</nav>
+		</header>
 
-    <!-- Main Content -->
-    <div class="container">
-      <div class="card">
-        <div class="question-section">
-          <h2 id="question">Question 1: What is your favorite color?</h2>
-          <p id="audio-timer">0:00</p>
-        </div>
+		<!-- Main Content -->
+		<div class="container">
+			<div class="card">
+				<div class="question-section">
+					<h2 id="question">
+						Question 1: What is your favorite color?
+					</h2>
+					<p id="audio-timer">0:00</p>
+				</div>
 
-        <h3>Provide your Voice Answer</h3>
+				<!-- Recording Indicator -->
+				<div class="recording-indicator" id="recording-indicator">
+					<div class="recording-dot"></div>
+					<span>Recording in progress...</span>
+				</div>
 
-        <div class="controls">
-          <button id="start-recording" class="mic-button">
-            <i class="fas fa-microphone"></i> Start Recording
-          </button>
-          <button id="stop-recording" class="mic-button" disabled>
-            <i class="fas fa-stop-circle"></i> Stop Recording
-          </button>
-        </div>
+				<h3>Provide your Voice Answer</h3>
 
-        <div class="controls play-audio-container">
-          <button id="play-audio" class="play-button" disabled>
-            <i class="fas fa-play-circle"></i> Play Audio
-          </button>
-          <!-- New stop button to stop audio playback -->
-          <!-- Stop Audio button -->
-          <button id="stop-audio" class="play-button" disabled>
-            <i class="fas fa-stop-circle"></i> Stop Audio
-          </button>
-        </div>
+				<div class="controls">
+					<button id="start-recording" class="mic-button">
+						<i class="fas fa-microphone"></i> Start Recording
+					</button>
+					<button id="stop-recording" class="mic-button" disabled>
+						<i class="fas fa-stop-circle"></i> Stop Recording
+					</button>
+				</div>
 
-        <div id="progress-container">
-          <div id="progress-bar"></div>
-        </div>
+				<div class="controls">
+					<button id="play-audio" class="play-button" disabled>
+						<i class="fas fa-play-circle"></i> Play Audio
+					</button>
+					<button id="stop-audio" class="play-button" disabled>
+						<i class="fas fa-stop-circle"></i> Stop Audio
+					</button>
+				</div>
 
-        <div class="navigation">
-          <button class="button" id="next-question">Next</button>
-          <button class="button" id="debug-question">Go to Last</button>
-          <form action="/submit_test" method="POST">
-            <button type="submit" class="button" id="submit-button">
-              Submit
-            </button>
-          </form>
-          
-        </div>
+				<div id="progress-container">
+					<div id="progress-bar"></div>
+				</div>
 
-        <!-- Flash message for processing -->
-        <div id="flash-message" style="display: none; text-align: center">
-          <div class="spinner"></div>
-          <p>Processing... Please wait.</p>
-        </div>
+				<div class="navigation">
+					<button class="button" id="next-question">
+						<span>Next</span>
+						<i class="fas fa-arrow-right"></i>
+					</button>
+					<button class="button" id="debug-question">
+						<i class="fas fa-forward"></i>
+						Go to Last
+					</button>
+					<form
+						action="/submit_test"
+						method="POST"
+						style="flex: 1; min-width: 140px"
+					>
+						<button
+							type="submit"
+							class="button"
+							id="submit-button"
+							style="width: 100%"
+						>
+							<i class="fas fa-paper-plane"></i>
+							Submit
+						</button>
+					</form>
+				</div>
 
-        <!-- Section to display output (image, text) after processing -->
-        <div id="output" style="display: none">
-          <!-- The result of the model output will be displayed here -->
-        </div>
-      </div>
-    </div>
+				<!-- Flash message -->
+				<div id="flash-message">
+					<div class="spinner"></div>
+					<p>Processing... Please wait.</p>
+				</div>
 
-    <script src="{{ url_for('static', filename='js/take_test.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  </script>
-    
-  </body>
+				<div id="output" style="display: none"></div>
+			</div>
+		</div>
+
+		<script src="{{ url_for('static', filename='js/take_test.js') }}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+		<script>
+			// Add recording indicator toggle to your existing JS
+			const recordingIndicator = document.getElementById(
+				"recording-indicator"
+			);
+			const startBtn = document.getElementById("start-recording");
+			const stopBtn = document.getElementById("stop-recording");
+
+			startBtn.addEventListener("click", () => {
+				recordingIndicator.classList.add("active");
+			});
+
+			stopBtn.addEventListener("click", () => {
+				recordingIndicator.classList.remove("active");
+			});
+		</script>
+	</body>
 </html>
