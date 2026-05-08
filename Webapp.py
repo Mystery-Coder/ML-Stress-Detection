@@ -22,6 +22,9 @@ import pickle
 import librosa
 from pydub import AudioSegment
 import time
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="librosa")
+warnings.filterwarnings("ignore", category=FutureWarning, module="librosa")
 
 TASK_STATUS = {"completed": False}
 TASK_LOCK = threading.Lock()
@@ -365,7 +368,7 @@ def class_predictor():
     print("\nPredicting emotions...")
     emo_duration = 3 
     
-    files_3sec = sorted(os.listdir(folder3))
+    files_3sec = sorted([f for f in os.listdir(folder3) if f.endswith(('.wav', '.mp3', '.ogg', '.flac'))])
     for i, file in enumerate(files_3sec):
         try:
             file_path = os.path.join(folder3, file)
@@ -390,7 +393,7 @@ def class_predictor():
     print("\nPredicting depression levels...")
     dep_duration = 2 * 60  
     
-    files_2min = sorted(os.listdir(folder2))
+    files_2min = sorted([f for f in os.listdir(folder2) if f.endswith(('.wav', '.mp3', '.ogg', '.flac'))])
     for i, file in enumerate(files_2min):
         try:
             file_path = os.path.join(folder2, file)
