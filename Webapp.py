@@ -257,8 +257,8 @@ def class_predictor():
     
     # Load ML models and label encoders
     print("Loading models...")
-    lb_dp = pickle.load(open("lb\\lb-depression.sav", 'rb'))
-    lb_emo = pickle.load(open("lb\\lb-emotion.sav", 'rb'))
+    lb_dp = pickle.load(open("Model\\lb-depression.sav", 'rb'))
+    lb_emo = pickle.load(open("Model\\lb-emotion.sav", 'rb'))
     model_emotion = load_model("Model\\emotion.keras")
     model_depression = load_model("Model\\depression.keras")
     print("Models loaded successfully")

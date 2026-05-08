@@ -289,8 +289,8 @@ def evaluate_folder(audio_folder, model_dir="Model", lb_dir="lb", output_folder=
     # Load models
     print("\nLoading models...")
     try:
-        lb_dp = pickle.load(open(os.path.join(lb_dir, "lb-depression.sav"), 'rb'))
-        lb_emo = pickle.load(open(os.path.join(lb_dir, "lb-emotion.sav"), 'rb'))
+        lb_dp = pickle.load(open(os.path.join(model_dir, "lb-depression.sav"), 'rb'))
+        lb_emo = pickle.load(open(os.path.join(model_dir, "lb-emotion.sav"), 'rb'))
         model_emotion = load_model(os.path.join(model_dir, "emotion.keras"))
         model_depression = load_model(os.path.join(model_dir, "depression.keras"))
         print("✓ Models loaded successfully")

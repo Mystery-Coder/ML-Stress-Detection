@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Inter, system-ui, -apple-system, sans-serif;
+  --color-teal-50: #E1F5EE;
+  --color-teal-400: #1D9E75;
+  --color-teal-500: #1D9E75;
+  --color-teal-600: #0F6E56;
+}
