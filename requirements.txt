@@ -1,6 +1,4 @@
 Flask
-Werkzeug
-Flask-SQLAlchemy
 joblib
 numpy
 matplotlib

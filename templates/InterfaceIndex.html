@@ -14,18 +14,9 @@
       <!-- Navbar -->
       <nav class="navbar">
         <div class="brand">Stress Predictor</div>
-        <!-- Check if user is logged in, show either login button or user name -->
-        {% if session.get('username') %}
-        <span class="user-name">{{ session.get('username') }}</span>
-        <!-- Logout Button -->
-        <a href="{{ url_for('logout') }}">
-          <button class="login-button">Logout</button>
+        <a href="{{ url_for('take_test') }}">
+          <button class="login-button">Start Test</button>
         </a>
-        {% else %}
-        <a href="{{ url_for('login') }}">
-          <button class="login-button">Login</button>
-        </a>
-        {% endif %}
       </nav>
 
       <!-- Main Section -->
