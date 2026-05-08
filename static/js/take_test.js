@@ -50,7 +50,9 @@ let audioChunks = []; // ✅ Collect chunks during recording
 let audioBlob = null;
 let audioURL = null;
 let timerInterval = null;
+let playInterval = null;
 let audioSeconds = 0;
+let lastRecordingDuration = 0; // real recorded seconds (Chrome webm duration is Infinity)
 let audio = null; // Global audio variable to control playback
 let mediaStream = null; // ✅ Store stream to stop tracks later
 
@@ -154,6 +156,7 @@ startButton.addEventListener("click", async () => {
 
 			// Create URL for playback
 			audioURL = URL.createObjectURL(audioBlob);
+			lastRecordingDuration = audioSeconds; // save real duration (webm duration is Infinity)
 
 			// Save to responses map
 			audioResponses.set(currentQuestion, audioBlob);
@@ -214,29 +217,51 @@ playButton.addEventListener("click", () => {
 		audio.pause();
 		audio.currentTime = 0;
 	}
+	if (playInterval) {
+		clearInterval(playInterval);
+		playInterval = null;
+	}
 
 	audio = new Audio(audioURL);
 	progressBar.style.width = "0%";
+	stopAudioButton.disabled = false;
+	playButton.disabled = true;
+
+	// Update progress bar during playback.
+	// Chrome webm blobs have duration === Infinity, so use
+	// the manually tracked lastRecordingDuration instead.
+	function updateProgress() {
+		if (audio && lastRecordingDuration > 0) {
+			const pct = (audio.currentTime / lastRecordingDuration) * 100;
+			progressBar.style.width = Math.min(pct, 100) + "%";
+		}
+	}
+
+	playInterval = setInterval(updateProgress, 100);
 
 	audio.play();
 	console.log("Playing audio");
 
-	// Update progress bar
-	audio.addEventListener("timeupdate", function () {
-		const progress = (audio.currentTime / audio.duration) * 100;
-		progressBar.style.width = progress + "%";
-	});
-
-	// Enable/disable buttons based on playback
-	stopAudioButton.disabled = false;
-	playButton.disabled = true;
-
-	audio.onended = function () {
+	audio.addEventListener("ended", function onEnded() {
+		if (playInterval) {
+			clearInterval(playInterval);
+			playInterval = null;
+		}
 		console.log("Audio playback finished");
 		playButton.disabled = false;
 		stopAudioButton.disabled = true;
 		progressBar.style.width = "100%";
-	};
+	});
+
+	// Cleanup if audio errors out
+	audio.addEventListener("error", function onErr() {
+		if (playInterval) {
+			clearInterval(playInterval);
+			playInterval = null;
+		}
+		playButton.disabled = false;
+		stopAudioButton.disabled = true;
+	});
 });
 
 // Stop Audio
@@ -245,6 +270,10 @@ stopAudioButton.addEventListener("click", () => {
 		audio.pause();
 		audio.currentTime = 0;
 		progressBar.style.width = "0%";
+	}
+	if (playInterval) {
+		clearInterval(playInterval);
+		playInterval = null;
 	}
 	stopAudioButton.disabled = true;
 	playButton.disabled = false;
@@ -314,7 +343,7 @@ submitButton.addEventListener("click", async (event) => {
 			totalSize /
 			1024 /
 			1024
-		).toFixed(2)} MB)`
+		).toFixed(2)} MB)`,
 	);
 
 	// Add metadata
@@ -324,7 +353,7 @@ submitButton.addEventListener("click", async (event) => {
 			questions: questions,
 			timestamp: new Date().toISOString(),
 			totalRecordings: audioResponses.size,
-		})
+		}),
 	);
 
 	try {
@@ -338,7 +367,7 @@ submitButton.addEventListener("click", async (event) => {
 			timeout: 300000, // 5 minute timeout
 			onUploadProgress: (progressEvent) => {
 				const percentCompleted = Math.round(
-					(progressEvent.loaded * 100) / progressEvent.total
+					(progressEvent.loaded * 100) / progressEvent.total,
 				);
 				flashMessage.innerHTML = `<div class='spinner'></div> Uploading... ${percentCompleted}%`;
 			},
@@ -391,10 +420,14 @@ function resetRecordingState() {
 		audio = null;
 	}
 
-	// Clear interval
+	// Clear intervals
 	if (timerInterval) {
 		clearInterval(timerInterval);
 		timerInterval = null;
+	}
+	if (playInterval) {
+		clearInterval(playInterval);
+		playInterval = null;
 	}
 
 	// Reset variables

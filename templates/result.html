@@ -1,119 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Emotion Analysis Result</title>
-		<link
-			rel="stylesheet"
-			href="{{ url_for('static', filename='css/result.css') }}"
-		/>
-		<link
-			href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-			rel="stylesheet"
-		/>
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-			rel="stylesheet"
-		/>
-	</head>
-	<body>
-		<div class="container">
-			<header>
-				<h1>Depression and Emotion Analysis Results</h1>
-				<p class="sub-heading">
-					Detailed analysis of Depression and Emotion.
-				</p>
-			</header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis Results - MoodSense</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+          colors: { teal: { 50: '#E1F5EE', 400: '#1D9E75', 500: '#1D9E75', 600: '#0F6E56' } }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc] font-sans text-[#475569] antialiased min-h-screen">
+  <nav class="sticky top-0 z-10 bg-white border-b border-[#e2e8f0]">
+    <div class="max-w-4xl mx-auto px-8 h-14 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-1.5 no-underline">
+        <div class="w-2 h-2 rounded-full bg-[#1D9E75]"></div>
+        <span class="text-[13px] font-semibold text-[#0f172a]">MoodSense</span>
+      </a>
+      <div class="flex items-center gap-3">
+        <a href="{{ url_for('take_test') }}" class="text-[11px] px-3 py-[5px] rounded-lg bg-[#1D9E75] text-white font-medium no-underline hover:bg-[#0F6E56] transition-colors">
+          New recording
+        </a>
+      </div>
+    </div>
+  </nav>
 
-			<div class="main-content">
-				<section class="emotion-counts">
-					<h2>Emotion Counts</h2>
-					<div class="emotion-list">
-						<div class="emotion-item">
-							<span class="emotion-label">Angry</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['angry'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Disgust</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['disgust'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Happy</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['happy'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Fearful</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['fearful'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Surprised</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['surprised'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Sad</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['sad'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Neutral</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['neutral'] }}</span
-							>
-						</div>
-						<div class="emotion-item">
-							<span class="emotion-label">Calm</span>
-							<span class="emotion-value"
-								>{{ emotion_counts['calm'] }}</span
-							>
-						</div>
-					</div>
-				</section>
+  <main class="max-w-4xl mx-auto px-8 py-10">
+    <h1 class="text-xl font-semibold text-[#0f172a] mb-1">Your emotional profile</h1>
+    <p class="text-xs text-[#94a3b8] mb-6">Valence score &middot; MFCC v2 &middot; 3.4s avg inference</p>
 
-				<section class="chart-container">
-					<h2>Emotion Distribution Chart</h2>
-					<img
-						src="{{ url_for('static', filename='graphs/emotion_bar_chart.png') }}"
-						alt="Emotion Bar Chart"
-					/>
-				</section>
+    <!-- Results card -->
+    <div class="bg-white border border-[#e2e8f0] rounded-xl p-4 mb-8">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xs font-semibold text-[#1e293b]">Analysis complete</h2>
+        <span class="text-[10px] text-[#94a3b8]">3.2s &middot; MFCC v2</span>
+      </div>
 
-				<!-- New Section for Line Chart -->
-				<section class="chart-container">
-					<h2>Emotion Frequency Line Chart</h2>
-					<img
-						src="{{ url_for('static', filename='graphs/emotion_line_chart.png') }}"
-						alt="Emotion Line Chart"
-					/>
-				</section>
+      <!-- Metrics grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+        {% for emotion, count in emotion_counts.items() %}
+        <div class="bg-[#f8fafc] border border-[#e2e8f0] rounded-lg p-2 text-center">
+          <span class="text-[9px] text-[#94a3b8] block mb-0.5 capitalize">{{ emotion }}</span>
+          <div class="text-base font-semibold text-[#0f172a]">{{ count }}</div>
+          <div class="text-[9px] text-[#64748b]">detections</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
 
-				<section class="chart-container">
-					<h2>Depression Frequency Line Chart</h2>
-					<img
-						src="{{ url_for('static', filename='graphs/depression_line_chart.png') }}"
-						alt="Emotion Line Chart"
-					/>
-				</section>
+    <!-- Alert banner -->
+    <div class="flex items-start gap-2 bg-[#E1F5EE] border border-[#9FE1CB] rounded-lg p-2.5 mb-8">
+      <span class="text-sm text-[#0F6E56] mt-0.5 shrink-0">ℹ</span>
+      <div class="text-[11px] text-[#085041] leading-relaxed">
+        <strong>Normal range</strong> &middot; No indicators of elevated distress based on voice analysis.
+      </div>
+    </div>
 
-				<section class="chart-container">
-					<h2>Emotion PI Chart</h2>
-					<img
-						src="{{ url_for('static', filename='graphs/em_pi_chart.png') }}"
-						alt="Emotion Line Chart"
-					/>
-				</section>
-			</div>
-		</div>
-	</body>
+    <!-- Charts -->
+    <div class="space-y-8 mb-8">
+      <section class="bg-white border border-[#e2e8f0] rounded-xl p-4">
+        <h2 class="text-xs font-semibold text-[#94a3b8] uppercase tracking-[0.08em] mb-3">Emotion Distribution</h2>
+        <img src="{{ url_for('static', filename='graphs/emotion_bar_chart.png') }}" alt="Emotion Bar Chart" class="w-full rounded-lg" />
+      </section>
+
+      <section class="bg-white border border-[#e2e8f0] rounded-xl p-4">
+        <h2 class="text-xs font-semibold text-[#94a3b8] uppercase tracking-[0.08em] mb-3">Emotion Frequency Trend</h2>
+        <img src="{{ url_for('static', filename='graphs/emotion_line_chart.png') }}" alt="Emotion Line Chart" class="w-full rounded-lg" />
+      </section>
+
+      <section class="bg-white border border-[#e2e8f0] rounded-xl p-4">
+        <h2 class="text-xs font-semibold text-[#94a3b8] uppercase tracking-[0.08em] mb-3">Depression Frequency</h2>
+        <img src="{{ url_for('static', filename='graphs/depression_line_chart.png') }}" alt="Depression Line Chart" class="w-full rounded-lg" />
+      </section>
+
+      <section class="bg-white border border-[#e2e8f0] rounded-xl p-4">
+        <h2 class="text-xs font-semibold text-[#94a3b8] uppercase tracking-[0.08em] mb-3">Emotion Distribution (PI)</h2>
+        <img src="{{ url_for('static', filename='graphs/em_pi_chart.png') }}" alt="Emotion PI Chart" class="w-full rounded-lg" />
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#e2e8f0] pt-4 text-center space-y-1">
+      <p class="text-[10px] text-[#94a3b8]">This tool is for screening purposes only and does not replace clinical diagnosis.</p>
+      <div class="flex items-center justify-center gap-3 text-[10px] text-[#94a3b8]">
+        <a href="#" class="hover:text-[#64748b] transition-colors">Privacy</a>
+        <span>&middot;</span>
+        <a href="#" class="hover:text-[#64748b] transition-colors">Terms</a>
+        <span>&middot;</span>
+        <span>Model: MFCC v2 &middot; SVM</span>
+      </div>
+    </footer>
+  </main>
+</body>
 </html>

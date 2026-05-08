@@ -1,0 +1,359 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, system-ui, sans-serif; background: #f8fafc; }
+
+.spec-wrap { padding: 24px 0; }
+
+.section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #94a3b8;
+  margin: 32px 0 12px; padding-bottom: 6px;
+  border-bottom: 0.5px solid #e2e8f0;
+}
+.section-label:first-child { margin-top: 0; }
+
+/* TOKEN GRID */
+.token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 8px; }
+.token-card {
+  background: white; border: 0.5px solid #e2e8f0; border-radius: 10px;
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;
+}
+.token-swatch { width: 32px; height: 32px; border-radius: 6px; border: 0.5px solid rgba(0,0,0,0.06); }
+.token-name { font-size: 11px; font-weight: 600; color: #1e293b; }
+.token-val { font-size: 10px; color: #64748b; font-family: 'Courier New', monospace; }
+
+/* TYPOGRAPHY SPEC */
+.typo-row {
+  background: white; border: 0.5px solid #e2e8f0; border-radius: 10px;
+  padding: 14px 16px; display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px;
+}
+.typo-meta { min-width: 150px; }
+.typo-meta .label { font-size: 11px; font-weight: 600; color: #64748b; }
+.typo-meta .val { font-size: 10px; color: #94a3b8; font-family: 'Courier New', monospace; }
+.typo-sample { flex: 1; color: #1e293b; }
+
+/* SPACING */
+.spacing-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.spacing-bar { background: #1D9E75; height: 16px; border-radius: 3px; }
+.spacing-label { font-size: 11px; color: #475569; min-width: 80px; font-family: 'Courier New', monospace; }
+.spacing-note { font-size: 11px; color: #94a3b8; }
+
+/* COMPONENT PREVIEWS */
+.comp-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px; }
+.comp-card {
+  background: white; border: 0.5px solid #e2e8f0; border-radius: 10px;
+  padding: 14px;
+}
+.comp-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+
+/* ACTUAL COMPONENT DEMOS */
+.demo-nav { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: white; border-radius: 8px; border: 0.5px solid #e2e8f0; }
+.demo-logo { display: flex; align-items: center; gap: 6px; }
+.demo-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; }
+.demo-logo-text { font-size: 13px; font-weight: 600; color: #0f172a; }
+.demo-nav-links { display: flex; gap: 16px; }
+.demo-nav-link { font-size: 12px; color: #64748b; }
+.demo-nav-link.active { color: #1D9E75; font-weight: 500; }
+.demo-nav-cta { font-size: 11px; padding: 5px 12px; border-radius: 6px; background: #1D9E75; color: white; font-weight: 500; }
+
+.demo-hero { background: #f0faf6; border-radius: 10px; padding: 18px 16px; border: 0.5px solid #9FE1CB; }
+.demo-hero-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #0F6E56; margin-bottom: 6px; }
+.demo-hero-title { font-size: 20px; font-weight: 600; color: #0f172a; line-height: 1.3; margin-bottom: 6px; }
+.demo-hero-sub { font-size: 12px; color: #475569; line-height: 1.6; margin-bottom: 14px; }
+.demo-hero-btns { display: flex; gap: 8px; }
+.btn-primary { font-size: 12px; padding: 7px 16px; border-radius: 7px; background: #1D9E75; color: white; font-weight: 500; }
+.btn-ghost { font-size: 12px; padding: 7px 16px; border-radius: 7px; background: white; color: #1D9E75; border: 0.5px solid #5DCAA5; font-weight: 500; }
+
+.demo-record { display: flex; flex-direction: column; align-items: center; padding: 16px; }
+.demo-mic-ring { width: 56px; height: 56px; border-radius: 50%; border: 2px solid #1D9E75; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+.demo-mic-inner { width: 40px; height: 40px; border-radius: 50%; background: #1D9E75; display: flex; align-items: center; justify-content: center; }
+.demo-mic-inner svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+.demo-record-label { font-size: 11px; color: #64748b; }
+.demo-record-hint { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+.demo-waveform { display: flex; align-items: center; gap: 2px; height: 28px; margin: 10px 0; }
+.demo-wbar { width: 4px; border-radius: 2px; background: #1D9E75; opacity: 0.6; }
+
+.demo-result-card { background: #f8fafc; border-radius: 8px; padding: 12px; border: 0.5px solid #e2e8f0; }
+.demo-result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.demo-result-title { font-size: 12px; font-weight: 600; color: #1e293b; }
+.demo-result-time { font-size: 10px; color: #94a3b8; }
+.demo-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+.demo-metric { background: white; border: 0.5px solid #e2e8f0; border-radius: 7px; padding: 8px; text-align: center; }
+.demo-metric-label { font-size: 9px; color: #94a3b8; display: block; margin-bottom: 2px; }
+.demo-metric-val { font-size: 16px; font-weight: 600; color: #0f172a; }
+.demo-metric-sub { font-size: 9px; color: #64748b; }
+.demo-alert { display: flex; align-items: flex-start; gap: 8px; background: #E1F5EE; border-radius: 7px; padding: 9px 10px; border: 0.5px solid #9FE1CB; }
+.demo-alert-icon { font-size: 14px; color: #0F6E56; margin-top: 1px; flex-shrink: 0; }
+.demo-alert-text { font-size: 11px; color: #085041; line-height: 1.5; }
+
+.demo-alert-warn { background: #FAEEDA; border-color: #EF9F27; }
+.demo-alert-warn .demo-alert-icon { color: #854F0B; }
+.demo-alert-warn .demo-alert-text { color: #633806; }
+
+.demo-alert-crit { background: #FCEBEB; border-color: #F09595; }
+.demo-alert-crit .demo-alert-icon { color: #A32D2D; }
+.demo-alert-crit .demo-alert-text { color: #791F1F; }
+
+/* STATE STRIP */
+.state-strip { display: flex; gap: 8px; }
+.state-chip {
+  flex: 1; border-radius: 8px; padding: 10px 8px; text-align: center;
+  border: 0.5px solid #e2e8f0; background: white;
+}
+.state-chip-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; color: #94a3b8; display: block; margin-bottom: 4px; }
+.state-chip-dot { width: 8px; height: 8px; border-radius: 50%; margin: 0 auto 4px; }
+.state-chip-name { font-size: 11px; font-weight: 500; color: #334155; }
+
+.state-idle .state-chip-dot { background: #e2e8f0; }
+.state-recording .state-chip-dot { background: #E24B4A; }
+.state-analyzing .state-chip-dot { background: #EF9F27; }
+.state-result .state-chip-dot { background: #1D9E75; }
+.state-error .state-chip-dot { background: #E24B4A; }
+
+/* PAGE LAYOUT DIAGRAM */
+.layout-diagram { background: white; border: 0.5px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.layout-bar { background: #f1f5f9; border-bottom: 0.5px solid #e2e8f0; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; }
+.layout-bar-title { font-size: 10px; font-weight: 600; color: #64748b; }
+.layout-section { padding: 10px 12px; border-bottom: 0.5px dashed #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+.layout-section:last-child { border-bottom: none; }
+.layout-section-name { font-size: 11px; font-weight: 500; color: #334155; }
+.layout-section-desc { font-size: 10px; color: #94a3b8; }
+.layout-h { font-size: 10px; font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #475569; }
+
+.anno { font-size: 10px; color: #94a3b8; margin-top: 4px; }
+</style>
+
+<div class="spec-wrap">
+<h2 style="display:none">Design spec for clinical calm voice emotion detection UI</h2>
+
+<div class="section-label">color tokens</div>
+<div class="token-grid">
+  <div class="token-card">
+    <div class="token-swatch" style="background:#1D9E75"></div>
+    <div class="token-name">teal-400</div>
+    <div class="token-val">#1D9E75</div>
+    <div class="token-val">Primary / CTA</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#0F6E56"></div>
+    <div class="token-name">teal-600</div>
+    <div class="token-val">#0F6E56</div>
+    <div class="token-val">Hover / border</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#E1F5EE"></div>
+    <div class="token-name">teal-50</div>
+    <div class="token-val">#E1F5EE</div>
+    <div class="token-val">Surface / alert bg</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#f8fafc; border:0.5px solid #e2e8f0"></div>
+    <div class="token-name">gray-50</div>
+    <div class="token-val">#f8fafc</div>
+    <div class="token-val">Page background</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#ffffff; border:0.5px solid #e2e8f0"></div>
+    <div class="token-name">white</div>
+    <div class="token-val">#ffffff</div>
+    <div class="token-val">Card surface</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#0f172a"></div>
+    <div class="token-name">slate-900</div>
+    <div class="token-val">#0f172a</div>
+    <div class="token-val">Heading text</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#475569"></div>
+    <div class="token-name">slate-600</div>
+    <div class="token-val">#475569</div>
+    <div class="token-val">Body text</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#94a3b8"></div>
+    <div class="token-name">slate-400</div>
+    <div class="token-val">#94a3b8</div>
+    <div class="token-val">Muted / labels</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#EF9F27"></div>
+    <div class="token-name">amber-200</div>
+    <div class="token-val">#EF9F27</div>
+    <div class="token-val">Warning state</div>
+  </div>
+  <div class="token-card">
+    <div class="token-swatch" style="background:#E24B4A"></div>
+    <div class="token-name">red-400</div>
+    <div class="token-val">#E24B4A</div>
+    <div class="token-val">Critical / record</div>
+  </div>
+</div>
+
+<div class="section-label">typography scale</div>
+<div class="typo-row">
+  <div class="typo-meta"><div class="label">Display</div><div class="val">text-3xl / 30px / 600</div></div>
+  <div class="typo-sample" style="font-size:22px;font-weight:600;color:#0f172a;line-height:1.2">Understand your voice</div>
+</div>
+<div class="typo-row">
+  <div class="typo-meta"><div class="label">Heading 1</div><div class="val">text-xl / 20px / 600</div></div>
+  <div class="typo-sample" style="font-size:20px;font-weight:600;color:#0f172a">Your emotional profile</div>
+</div>
+<div class="typo-row">
+  <div class="typo-meta"><div class="label">Heading 2</div><div class="val">text-base / 16px / 500</div></div>
+  <div class="typo-sample" style="font-size:16px;font-weight:500;color:#1e293b">Session results</div>
+</div>
+<div class="typo-row">
+  <div class="typo-meta"><div class="label">Body</div><div class="val">text-sm / 14px / 400</div></div>
+  <div class="typo-sample" style="font-size:14px;color:#475569;line-height:1.6">Speak naturally for 30 seconds. The model analyzes MFCC features to detect emotional tone and low-mood indicators.</div>
+</div>
+<div class="typo-row">
+  <div class="typo-meta"><div class="label">Caption / label</div><div class="val">text-xs / 12px / 400</div></div>
+  <div class="typo-sample" style="font-size:12px;color:#94a3b8">Valence score · MFCC v2 · 3.4s avg inference</div>
+</div>
+<div class="anno">Font stack: <span style="font-family:monospace">Inter, system-ui, -apple-system, sans-serif</span> &nbsp;·&nbsp; Tailwind: <span style="font-family:monospace">font-sans</span></div>
+
+<div class="section-label">spacing scale (Tailwind)</div>
+<div class="spacing-row"><div class="spacing-bar" style="width:4px"></div><div class="spacing-label">p-1 / 4px</div><div class="spacing-note">Icon inner gap</div></div>
+<div class="spacing-row"><div class="spacing-bar" style="width:8px"></div><div class="spacing-label">p-2 / 8px</div><div class="spacing-note">Pill padding, small gaps</div></div>
+<div class="spacing-row"><div class="spacing-bar" style="width:12px"></div><div class="spacing-label">p-3 / 12px</div><div class="spacing-note">Card inner padding</div></div>
+<div class="spacing-row"><div class="spacing-bar" style="width:16px"></div><div class="spacing-label">p-4 / 16px</div><div class="spacing-note">Section padding, card default</div></div>
+<div class="spacing-row"><div class="spacing-bar" style="width:24px"></div><div class="spacing-label">p-6 / 24px</div><div class="spacing-note">Hero section, large cards</div></div>
+<div class="spacing-row"><div class="spacing-bar" style="width:32px"></div><div class="spacing-label">p-8 / 32px</div><div class="spacing-note">Page horizontal gutter (mobile)</div></div>
+<div class="spacing-row"><div class="spacing-bar" style="width:64px"></div><div class="spacing-label">px-16 / 64px</div><div class="spacing-note">Page horizontal gutter (desktop)</div></div>
+
+<div class="section-label">border radius</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+  <div style="background:white;border:0.5px solid #e2e8f0;padding:10px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;border-radius:4px">
+    <div style="width:32px;height:32px;background:#E1F5EE;border:0.5px solid #9FE1CB;border-radius:4px"></div>
+    <div style="font-size:10px;color:#64748b;font-family:monospace">rounded / 4px</div>
+    <div style="font-size:10px;color:#94a3b8">Badges, pills</div>
+  </div>
+  <div style="background:white;border:0.5px solid #e2e8f0;padding:10px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;border-radius:4px">
+    <div style="width:32px;height:32px;background:#E1F5EE;border:0.5px solid #9FE1CB;border-radius:8px"></div>
+    <div style="font-size:10px;color:#64748b;font-family:monospace">rounded-lg / 8px</div>
+    <div style="font-size:10px;color:#94a3b8">Buttons, inputs</div>
+  </div>
+  <div style="background:white;border:0.5px solid #e2e8f0;padding:10px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;border-radius:4px">
+    <div style="width:32px;height:32px;background:#E1F5EE;border:0.5px solid #9FE1CB;border-radius:12px"></div>
+    <div style="font-size:10px;color:#64748b;font-family:monospace">rounded-xl / 12px</div>
+    <div style="font-size:10px;color:#94a3b8">Cards</div>
+  </div>
+  <div style="background:white;border:0.5px solid #e2e8f0;padding:10px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;border-radius:4px">
+    <div style="width:32px;height:32px;background:#E1F5EE;border:0.5px solid #9FE1CB;border-radius:9999px"></div>
+    <div style="font-size:10px;color:#64748b;font-family:monospace">rounded-full</div>
+    <div style="font-size:10px;color:#94a3b8">Record button, avatar</div>
+  </div>
+</div>
+
+<div class="section-label">page layout structure</div>
+<div class="layout-diagram">
+  <div class="layout-bar"><div class="layout-bar-title">Page layout — max-w-4xl mx-auto</div></div>
+  <div class="layout-section"><div><div class="layout-section-name">Navbar</div><div class="layout-section-desc">Logo · nav links · login CTA</div></div><div class="layout-h">h-14</div></div>
+  <div class="layout-section"><div><div class="layout-section-name">Hero section</div><div class="layout-section-desc">Headline · subtext · CTA buttons · trust badge</div></div><div class="layout-h">py-20</div></div>
+  <div class="layout-section"><div><div class="layout-section-name">Record panel</div><div class="layout-section-desc">Mic button · waveform visualizer · timer</div></div><div class="layout-h">py-12</div></div>
+  <div class="layout-section"><div><div class="layout-section-name">Results card</div><div class="layout-section-desc">Metric pills · alert banner · MFCC note</div></div><div class="layout-h">py-8</div></div>
+  <div class="layout-section"><div><div class="layout-section-name">History / trend</div><div class="layout-section-desc">Past sessions mini-chart (optional)</div></div><div class="layout-h">py-8</div></div>
+  <div class="layout-section"><div><div class="layout-section-name">Footer</div><div class="layout-section-desc">Disclaimer · links · model info</div></div><div class="layout-h">h-16</div></div>
+</div>
+
+<div class="section-label">component previews</div>
+
+<div class="comp-group">
+  <div class="comp-card">
+    <div class="comp-label">Navbar</div>
+    <div class="demo-nav">
+      <div class="demo-logo"><div class="demo-logo-dot"></div><div class="demo-logo-text">MoodSense</div></div>
+      <div class="demo-nav-links">
+        <span class="demo-nav-link active">Analysis</span>
+        <span class="demo-nav-link">History</span>
+        <span class="demo-nav-link">About</span>
+      </div>
+      <div class="demo-nav-cta">Sign in</div>
+    </div>
+    <div class="anno">bg-white · border-b border-slate-100 · sticky top-0 z-10</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-label">Hero block</div>
+    <div class="demo-hero">
+      <div class="demo-hero-label">MFCC-powered</div>
+      <div class="demo-hero-title">Detect emotion<br>through your voice</div>
+      <div class="demo-hero-sub">Speak for 30 seconds. Our model analyses pitch, cadence, and spectral features.</div>
+      <div class="demo-hero-btns">
+        <div class="btn-primary">Start recording</div>
+        <div class="btn-ghost">Learn how it works</div>
+      </div>
+    </div>
+    <div class="anno">bg-teal-50 · border border-teal-200 · rounded-2xl</div>
+  </div>
+</div>
+
+<div class="comp-group">
+  <div class="comp-card">
+    <div class="comp-label">Record button</div>
+    <div class="demo-record">
+      <div class="demo-mic-ring">
+        <div class="demo-mic-inner">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+      </div>
+      <div class="demo-waveform">
+        <div class="demo-wbar" style="height:35%"></div><div class="demo-wbar" style="height:60%"></div><div class="demo-wbar" style="height:85%"></div><div class="demo-wbar" style="height:50%"></div><div class="demo-wbar" style="height:90%"></div><div class="demo-wbar" style="height:65%"></div><div class="demo-wbar" style="height:40%"></div><div class="demo-wbar" style="height:75%"></div><div class="demo-wbar" style="height:55%"></div>
+      </div>
+      <div class="demo-record-label">Tap to begin</div>
+      <div class="demo-record-hint">Speak clearly for best results</div>
+    </div>
+    <div class="anno">Outer ring: border-2 border-teal-500 rounded-full<br>Button: bg-teal-500 rounded-full w-14 h-14<br>Active: border-red-400 · bg-red-400 (recording)</div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-label">Results card</div>
+    <div class="demo-result-card">
+      <div class="demo-result-header">
+        <div class="demo-result-title">Analysis complete</div>
+        <div class="demo-result-time">3.2s · MFCC v2</div>
+      </div>
+      <div class="demo-metrics">
+        <div class="demo-metric"><span class="demo-metric-label">Valence</span><div class="demo-metric-val">0.42</div><div class="demo-metric-sub">low-neutral</div></div>
+        <div class="demo-metric"><span class="demo-metric-label">Energy</span><div class="demo-metric-val">0.31</div><div class="demo-metric-sub">subdued</div></div>
+        <div class="demo-metric"><span class="demo-metric-label">PHQ-9 est.</span><div class="demo-metric-val">11</div><div class="demo-metric-sub">mild-mod.</div></div>
+      </div>
+      <div class="demo-alert">
+        <span style="font-size:13px;color:#0F6E56">ℹ</span>
+        <div class="demo-alert-text">Mild-moderate low mood detected. Consider follow-up with a clinician.</div>
+      </div>
+    </div>
+    <div class="anno">bg-slate-50 · border border-slate-200 · rounded-xl</div>
+  </div>
+</div>
+
+<div class="section-label">alert / status variants</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
+  <div class="demo-alert">
+    <span style="font-size:13px;color:#0F6E56">✓</span>
+    <div class="demo-alert-text"><strong>Normal range</strong> · No indicators of elevated distress. Valence score 0.65+.</div>
+  </div>
+  <div class="demo-alert demo-alert-warn">
+    <span style="font-size:13px;color:#854F0B">!</span>
+    <div class="demo-alert-text"><strong>Mild-moderate</strong> · Some low-mood features detected. PHQ-9 estimate 8–14.</div>
+  </div>
+  <div class="demo-alert demo-alert-crit">
+    <span style="font-size:13px;color:#A32D2D">✕</span>
+    <div class="demo-alert-text"><strong>Elevated concern</strong> · Strong depression markers. Please consult a mental health professional.</div>
+  </div>
+</div>
+<div class="anno">Normal: bg-teal-50 border-teal-200 · Moderate: bg-amber-50 border-amber-200 · Critical: bg-red-50 border-red-200</div>
+
+<div class="section-label">UI states</div>
+<div class="state-strip">
+  <div class="state-chip state-idle"><span class="state-chip-label">1</span><div class="state-chip-dot"></div><div class="state-chip-name">Idle</div></div>
+  <div class="state-chip state-recording"><span class="state-chip-label">2</span><div class="state-chip-dot"></div><div class="state-chip-name">Recording</div></div>
+  <div class="state-chip state-analyzing"><span class="state-chip-label">3</span><div class="state-chip-dot"></div><div class="state-chip-name">Analyzing</div></div>
+  <div class="state-chip state-result"><span class="state-chip-label">4</span><div class="state-chip-dot"></div><div class="state-chip-name">Result</div></div>
+  <div class="state-chip state-error"><span class="state-chip-label">5</span><div class="state-chip-dot"></div><div class="state-chip-name">Error</div></div>
+</div>
+<div class="anno" style="margin-top:8px">State drives: mic button color · waveform animation · results panel visibility · alert variant</div>
+
+</div>

@@ -5,7 +5,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from joblib import load  # For loading the ML model
 import os
-import subprocess
 import json
 from werkzeug.utils import secure_filename
 import matplotlib.pyplot as plt
@@ -13,7 +12,6 @@ from collections import Counter
 import numpy as np
 import threading
 import matplotlib
-import soundfile as sf
 from tensorflow.keras.models import load_model  # type: ignore
 import pickle
 import librosa

@@ -1,126 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Stress Assessment - Voice Recording</title>
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-			rel="stylesheet"
-		/>
-		<link
-			rel="stylesheet"
-			href="{{ url_for('static', filename='css/TakeTestStyle.css') }}"
-		/>
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	</head>
-	<body>
-		<!-- Navbar -->
-		<header class="header">
-			<nav class="navbar">
-				<a href="/" class="nav-button">
-					<i class="fas fa-home"></i> Stress Predict
-				</a>
-				<a href="/result" class="nav-button">
-					<i class="fas fa-chart-line"></i> Results
-				</a>
-			</nav>
-		</header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice Assessment - MoodSense</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+          colors: { teal: { 50: '#E1F5EE', 400: '#1D9E75', 500: '#1D9E75', 600: '#0F6E56' } }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-		<!-- Main Content -->
-		<div class="container">
-			<div class="card">
-				<div class="question-section">
-					<h2 id="question">
-						Question 1: What is your favorite color?
-					</h2>
-					<p id="audio-timer">0:00</p>
-				</div>
+  <style>
+    .recording-indicator { display: none; }
+    .recording-indicator.active { display: flex; }
+    #submit-button { display: none; }
+    #flash-message { display: none; }
 
-				<!-- Recording Indicator -->
-				<div class="recording-indicator" id="recording-indicator">
-					<div class="recording-dot"></div>
-					<span>Recording in progress...</span>
-				</div>
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .recording-dot { animation: blink 1.5s ease-in-out infinite; }
 
-				<h3>Provide your Voice Answer</h3>
+    @keyframes wave {
+      0%, 100% { transform: scaleY(0.4); }
+      50% { transform: scaleY(1); }
+    }
+    .waveform-recording .wave-bar { animation: wave 1.2s ease-in-out infinite; transform-origin: bottom; }
+    .waveform-recording .wave-bar:nth-child(1) { animation-delay: 0s; }
+    .waveform-recording .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+    .waveform-recording .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+    .waveform-recording .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+    .waveform-recording .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+    .waveform-recording .wave-bar:nth-child(6) { animation-delay: 0.5s; }
+    .waveform-recording .wave-bar:nth-child(7) { animation-delay: 0.6s; }
+    .waveform-recording .wave-bar:nth-child(8) { animation-delay: 0.7s; }
+    .waveform-recording .wave-bar:nth-child(9) { animation-delay: 0.8s; }
 
-				<div class="controls">
-					<button id="start-recording" class="mic-button">
-						<i class="fas fa-microphone"></i> Start Recording
-					</button>
-					<button id="stop-recording" class="mic-button" disabled>
-						<i class="fas fa-stop-circle"></i> Stop Recording
-					</button>
-				</div>
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
 
-				<div class="controls">
-					<button id="play-audio" class="play-button" disabled>
-						<i class="fas fa-play-circle"></i> Play Audio
-					</button>
-					<button id="stop-audio" class="play-button" disabled>
-						<i class="fas fa-stop-circle"></i> Stop Audio
-					</button>
-				</div>
+    #flash-message {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2000;
+    }
+    #flash-message .success-message { color: #1D9E75; font-weight: 600; }
+    #flash-message .error-message { color: #E24B4A; font-weight: 500; font-size: 14px; }
+  </style>
+</head>
+<body class="bg-[#f8fafc] font-sans text-[#475569] antialiased min-h-screen">
+  <nav class="sticky top-0 z-10 bg-white border-b border-[#e2e8f0]">
+    <div class="max-w-4xl mx-auto px-8 h-14 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-1.5 no-underline">
+        <i class="fas fa-arrow-left text-[#64748b] text-xs"></i>
+        <div class="flex items-center gap-1.5">
+          <div class="w-2 h-2 rounded-full bg-[#1D9E75]"></div>
+          <span class="text-[13px] font-semibold text-[#0f172a]">MoodSense</span>
+        </div>
+      </a>
+      <a href="/result" class="text-[11px] px-3 py-[5px] rounded-lg bg-white text-[#64748b] border border-[#e2e8f0] font-medium no-underline hover:bg-[#f8fafc] transition-colors">
+        <i class="fas fa-chart-line text-[10px] mr-1"></i> Results
+      </a>
+    </div>
+  </nav>
 
-				<div id="progress-container">
-					<div id="progress-bar"></div>
-				</div>
+  <div class="max-w-2xl mx-auto px-8 py-10">
+    <!-- Question card -->
+    <div class="bg-white border border-[#e2e8f0] rounded-xl p-4 mb-6">
+      <h2 id="question" class="text-base font-medium text-[#1e293b] leading-relaxed mb-3">Question 1: What is your favorite color?</h2>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="far fa-clock text-[#94a3b8] text-[11px]"></i>
+          <span id="audio-timer" class="text-lg font-semibold text-[#1D9E75] tabular-nums">0:00</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#1D9E75]"></span>
+          <span class="text-[10px] text-[#94a3b8]">Recording</span>
+        </div>
+      </div>
+    </div>
 
-				<div class="navigation">
-					<button class="button" id="next-question">
-						<span>Next</span>
-						<i class="fas fa-arrow-right"></i>
-					</button>
-					<button class="button" id="debug-question">
-						<i class="fas fa-forward"></i>
-						Go to Last
-					</button>
-					<form
-						action="/submit_test"
-						method="POST"
-						style="flex: 1; min-width: 140px"
-					>
-						<button
-							type="submit"
-							class="button"
-							id="submit-button"
-							style="width: 100%"
-						>
-							<i class="fas fa-paper-plane"></i>
-							Submit
-						</button>
-					</form>
-				</div>
+    <!-- Recording indicator -->
+    <div id="recording-indicator" class="recording-indicator items-center justify-center gap-3 p-3 bg-[#FCEBEB] border border-[#F09595] rounded-lg mb-6">
+      <div class="recording-dot w-3 h-3 rounded-full bg-[#E24B4A]"></div>
+      <span class="text-sm font-medium text-[#A32D2D]">Recording in progress...</span>
+    </div>
 
-				<!-- Flash message -->
-				<div id="flash-message">
-					<div class="spinner"></div>
-					<p>Processing... Please wait.</p>
-				</div>
+    <!-- Record panel -->
+    <div class="bg-white border border-[#e2e8f0] rounded-xl p-6 flex flex-col items-center mb-6">
+      <div class="w-14 h-14 rounded-full border-2 border-[#1D9E75] flex items-center justify-center mb-3 recording-state" id="mic-ring">
+        <div class="w-10 h-10 rounded-full bg-[#1D9E75] flex items-center justify-center recording-state-inner" id="mic-inner">
+          <svg class="w-[18px] h-[18px] stroke-white fill-none stroke-2" viewBox="0 0 24 24">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </div>
+      </div>
 
-				<div id="output" style="display: none"></div>
-			</div>
-		</div>
+      <div class="flex items-center gap-0.5 h-7 mb-3" id="waveform-container">
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:35%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:60%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:85%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:50%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:90%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:65%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:40%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:75%"></div>
+        <div class="wave-bar w-1 rounded-sm bg-[#1D9E75] opacity-60" style="height:55%"></div>
+      </div>
 
-		<script src="{{ url_for('static', filename='js/take_test.js') }}"></script>
-		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <div class="text-[11px] text-[#64748b]">Tap to begin</div>
+      <div class="text-[10px] text-[#94a3b8] mt-0.5">Speak clearly for best results</div>
+    </div>
 
-		<script>
-			// Add recording indicator toggle to your existing JS
-			const recordingIndicator = document.getElementById(
-				"recording-indicator"
-			);
-			const startBtn = document.getElementById("start-recording");
-			const stopBtn = document.getElementById("stop-recording");
+    <!-- Controls -->
+    <div class="flex justify-center gap-3 mb-6 flex-wrap">
+      <button id="start-recording" class="text-xs px-4 py-[7px] rounded-lg bg-[#1D9E75] text-white font-medium hover:bg-[#0F6E56] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5">
+        <i class="fas fa-microphone"></i> Start Recording
+      </button>
+      <button id="stop-recording" class="text-xs px-4 py-[7px] rounded-lg bg-[#E24B4A] text-white font-medium hover:bg-[#c43d3c] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5" disabled>
+        <i class="fas fa-stop-circle"></i> Stop Recording
+      </button>
+    </div>
+    <div class="flex justify-center gap-3 mb-6 flex-wrap">
+      <button id="play-audio" class="text-xs px-4 py-[7px] rounded-lg bg-white text-[#1D9E75] border border-[#5DCAA5] font-medium hover:bg-[#E1F5EE] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5" disabled>
+        <i class="fas fa-play-circle"></i> Play Audio
+      </button>
+      <button id="stop-audio" class="text-xs px-4 py-[7px] rounded-lg bg-white text-[#64748b] border border-[#e2e8f0] font-medium hover:bg-[#f8fafc] transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5" disabled>
+        <i class="fas fa-stop-circle"></i> Stop Audio
+      </button>
+    </div>
 
-			startBtn.addEventListener("click", () => {
-				recordingIndicator.classList.add("active");
-			});
+    <!-- Progress bar -->
+    <div id="progress-container" class="w-full h-2 bg-[#e2e8f0] rounded-full mb-6 overflow-hidden">
+      <div id="progress-bar" class="h-full rounded-full bg-[#1D9E75]" style="width:0%"></div>
+    </div>
 
-			stopBtn.addEventListener("click", () => {
-				recordingIndicator.classList.remove("active");
-			});
-		</script>
-	</body>
+    <h3 class="text-sm font-medium text-[#64748b] text-center mb-4">Question progress</h3>
+
+    <!-- State strip -->
+    <div class="flex gap-2 mb-6">
+      <div class="flex-1 rounded-lg py-2.5 px-2 text-center border border-[#e2e8f0] bg-white">
+        <span class="text-[9px] uppercase tracking-[0.06em] font-semibold text-[#94a3b8] block mb-1">1</span>
+        <div class="w-2 h-2 rounded-full bg-[#e2e8f0] mx-auto mb-1"></div>
+        <div class="text-[11px] font-medium text-[#334155]">Idle</div>
+      </div>
+      <div class="flex-1 rounded-lg py-2.5 px-2 text-center border border-[#e2e8f0] bg-white">
+        <span class="text-[9px] uppercase tracking-[0.06em] font-semibold text-[#94a3b8] block mb-1">2</span>
+        <div class="w-2 h-2 rounded-full bg-[#E24B4A] mx-auto mb-1"></div>
+        <div class="text-[11px] font-medium text-[#334155]">Recording</div>
+      </div>
+      <div class="flex-1 rounded-lg py-2.5 px-2 text-center border border-[#e2e8f0] bg-white">
+        <span class="text-[9px] uppercase tracking-[0.06em] font-semibold text-[#94a3b8] block mb-1">3</span>
+        <div class="w-2 h-2 rounded-full bg-[#EF9F27] mx-auto mb-1"></div>
+        <div class="text-[11px] font-medium text-[#334155]">Analyzing</div>
+      </div>
+      <div class="flex-1 rounded-lg py-2.5 px-2 text-center border border-[#e2e8f0] bg-white">
+        <span class="text-[9px] uppercase tracking-[0.06em] font-semibold text-[#94a3b8] block mb-1">4</span>
+        <div class="w-2 h-2 rounded-full bg-[#1D9E75] mx-auto mb-1"></div>
+        <div class="text-[11px] font-medium text-[#334155]">Result</div>
+      </div>
+      <div class="flex-1 rounded-lg py-2.5 px-2 text-center border border-[#e2e8f0] bg-white">
+        <span class="text-[9px] uppercase tracking-[0.06em] font-semibold text-[#94a3b8] block mb-1">5</span>
+        <div class="w-2 h-2 rounded-full bg-[#E24B4A] mx-auto mb-1"></div>
+        <div class="text-[11px] font-medium text-[#334155]">Error</div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex gap-3 flex-wrap">
+      <button class="flex-1 min-w-[140px] text-xs px-4 py-[7px] rounded-lg bg-[#1D9E75] text-white font-medium hover:bg-[#0F6E56] transition-colors flex items-center justify-center gap-1.5" id="next-question">
+        <span>Next</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+      <button class="flex-1 min-w-[140px] text-xs px-4 py-[7px] rounded-lg bg-white text-[#64748b] border border-[#e2e8f0] font-medium hover:bg-[#f8fafc] transition-colors flex items-center justify-center gap-1.5" id="debug-question">
+        <i class="fas fa-forward"></i> Go to Last
+      </button>
+      <form action="/submit_test" method="POST" class="flex-1 min-w-[140px]">
+        <button type="submit" class="w-full text-xs px-4 py-[7px] rounded-lg bg-[#1D9E75] text-white font-medium hover:bg-[#0F6E56] transition-colors flex items-center justify-center gap-1.5" id="submit-button">
+          <i class="fas fa-paper-plane"></i> Submit
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Flash message overlay -->
+  <div id="flash-message" class="bg-[#0f172a] text-white px-10 py-8 rounded-xl shadow-2xl text-center flex flex-col items-center gap-3">
+    <div class="spinner"></div>
+    <p class="text-sm font-medium">Processing... Please wait.</p>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/take_test.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    const recordingIndicator = document.getElementById("recording-indicator");
+    const startBtn = document.getElementById("start-recording");
+    const stopBtn = document.getElementById("stop-recording");
+    const micRing = document.getElementById("mic-ring");
+    const micInner = document.getElementById("mic-inner");
+    const waveformContainer = document.getElementById("waveform-container");
+
+    startBtn.addEventListener("click", () => {
+      recordingIndicator.classList.add("active");
+      micRing.className = "w-14 h-14 rounded-full border-2 border-[#E24B4A] flex items-center justify-center mb-3 recording-state";
+      micInner.className = "w-10 h-10 rounded-full bg-[#E24B4A] flex items-center justify-center recording-state-inner";
+      waveformContainer.classList.add("waveform-recording");
+    });
+
+    stopBtn.addEventListener("click", () => {
+      recordingIndicator.classList.remove("active");
+      micRing.className = "w-14 h-14 rounded-full border-2 border-[#1D9E75] flex items-center justify-center mb-3 recording-state";
+      micInner.className = "w-10 h-10 rounded-full bg-[#1D9E75] flex items-center justify-center recording-state-inner";
+      waveformContainer.classList.remove("waveform-recording");
+    });
+  </script>
+</body>
 </html>

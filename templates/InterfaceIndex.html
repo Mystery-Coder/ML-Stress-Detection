@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Human Stress Prediction</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/InterFaceStyle.css') }}"
-    />
-  </head>
-  <body>
-    <div class="card">
-      <!-- Navbar -->
-      <nav class="navbar">
-        <div class="brand">Stress Predictor</div>
-        <a href="{{ url_for('take_test') }}">
-          <button class="login-button">Start Test</button>
-        </a>
-      </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodSense - Emotion Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+          colors: { teal: { 50: '#E1F5EE', 400: '#1D9E75', 500: '#1D9E75', 600: '#0F6E56' } }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#f8fafc] font-sans text-[#475569] antialiased min-h-screen">
+  <nav class="sticky top-0 z-10 bg-white border-b border-[#e2e8f0]">
+    <div class="max-w-4xl mx-auto px-8 h-14 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-1.5 no-underline">
+        <div class="w-2 h-2 rounded-full bg-[#1D9E75]"></div>
+        <span class="text-[13px] font-semibold text-[#0f172a]">MoodSense</span>
+      </a>
+      <div class="hidden sm:flex items-center gap-4">
+        <span class="text-xs text-[#1D9E75] font-medium cursor-pointer">Analysis</span>
+        <span class="text-xs text-[#64748b] cursor-pointer">History</span>
+        <span class="text-xs text-[#64748b] cursor-pointer">About</span>
+      </div>
+      <a href="{{ url_for('take_test') }}" class="text-[11px] px-3 py-[5px] rounded-lg bg-[#1D9E75] text-white font-medium no-underline hover:bg-[#0F6E56] transition-colors">Get started</a>
+    </div>
+  </nav>
 
-      <!-- Main Section -->
-      <div class="main">
-        <h1>Welcome to Human Stress Prediction</h1>
-        <p>Take the test to find out your stress level.</p>
-
-        <!-- Image container with buttons on left and right -->
-        <div class="image-container">
-          <!-- Left Button -->
-          <a href="{{ url_for('take_test') }}">
-            <button class="take-test-button">Take the Test</button>
-          </a>
-
-          <!-- Stress Illustration Image -->
-          <div class="image-wrapper">
-            <img
-              src="{{ url_for('static', filename='images/stress_image.jpg') }}"
-              alt="Stress Illustration"
-              class="illustration"
-            />
-          </div>
-          <!-- Right Button -->
-          <div class="voice-icon">
-            <!-- Voice Record Icon (microphone) -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path
-                d="M12 1C10.3431 1 9 2.34315 9 4V14C9 15.6569 10.3431 17 12 17C13.6569 17 15 15.6569 15 14V4C15 2.34315 13.6569 1 12 1ZM13 14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14V4C11 3.44772 11.4477 3 12 3C12.5523 3 13 3.44772 13 4V14ZM6 14H18C18.5523 14 19 14.4477 19 15C19 15.5523 18.5523 16 18 16H6C5.44772 16 5 15.5523 5 15C5 14.4477 5.44772 14 6 14Z"
-              />
-            </svg>
-          </div>
-        </div>
+  <main class="max-w-4xl mx-auto px-8 py-20">
+    <div class="bg-[#E1F5EE] rounded-xl p-6 border border-[#9FE1CB]">
+      <div class="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#0F6E56] mb-1.5">MFCC-powered</div>
+      <h1 class="text-[22px] font-semibold text-[#0f172a] leading-tight mb-1.5">Detect emotion<br>through your voice</h1>
+      <p class="text-sm text-[#475569] leading-relaxed mb-3.5">Speak for 30 seconds. Our model analyses pitch, cadence, and spectral features to detect emotional tone and low-mood indicators.</p>
+      <div class="flex gap-2 flex-wrap">
+        <a href="{{ url_for('take_test') }}" class="text-xs px-4 py-[7px] rounded-lg bg-[#1D9E75] text-white font-medium no-underline hover:bg-[#0F6E56] transition-colors">Start recording</a>
+        <span class="text-xs px-4 py-[7px] rounded-lg bg-white text-[#1D9E75] border border-[#5DCAA5] font-medium inline-block cursor-default">Learn how it works</span>
       </div>
     </div>
-  </body>
+
+    <div class="mt-8 text-center">
+      <div class="flex items-center justify-center gap-1.5 text-[10px] text-[#94a3b8]">
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Your data is processed locally · No recordings stored</span>
+      </div>
+    </div>
+  </main>
+</body>
 </html>
