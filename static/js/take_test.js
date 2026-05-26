@@ -380,6 +380,9 @@ submitButton.addEventListener("click", async (event) => {
 
 			// ✅ Wait a moment before redirecting
 			setTimeout(() => {
+				// Allow intentional navigation without triggering the beforeunload confirm.
+				allowPageLeave = true;
+				window.removeEventListener("beforeunload", handleBeforeUnload);
 				window.location.href = "/result";
 			}, 1000);
 		} else {
@@ -450,13 +453,18 @@ function resetRecordingState() {
 updateQuestion();
 
 // ✅ Cleanup on page unload
-window.addEventListener("beforeunload", (event) => {
-	if (audioResponses.size > 0 && audioResponses.size < questions.length) {
-		event.preventDefault();
-		event.returnValue =
-			"You have unsaved recordings. Are you sure you want to leave?";
+// NOTE: This also triggers on programmatic redirects, so we gate the confirm.
+let allowPageLeave = false;
+function handleBeforeUnload(event) {
+	if (!allowPageLeave) {
+		if (audioResponses.size > 0 && audioResponses.size < questions.length) {
+			event.preventDefault();
+			event.returnValue =
+				"You have unsaved recordings. Are you sure you want to leave?";
+		}
 	}
 
 	// Clean up resources
 	resetRecordingState();
-});
+}
+window.addEventListener("beforeunload", handleBeforeUnload);
