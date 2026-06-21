@@ -213,3 +213,13 @@ temp_chunks/
 results/
 
 predictions.json
+
+# PDF Build
+*.pdf
+*.lof
+*.fls
+*.aux
+*.out
+*.gz
+*.toc
+*.fdb_latexmk

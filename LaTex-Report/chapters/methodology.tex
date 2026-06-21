@@ -1,0 +1,114 @@
+% ============================================================
+% CHAPTER: METHODOLOGY
+% ============================================================
+
+\chapter{Methodology}
+
+The overall approach for this project focuses on leveraging vocal characteristics for stress prediction. The strategy integrates data analytics and theoretical models to detect emotion and depression levels effectively. A Convolutional Neural Network (CNN) model is utilized, trained on the RAVDESS dataset (Ryerson Audio-Visual Database of Emotional Speech and Song) and the DAIC-WOZ dataset for depression analysis.
+
+\section{Emotion Analysis}
+
+\begin{enumerate}
+    \item \textbf{Input Audio Data:} Begin by gathering raw audio files from the RAVDESS dataset, which includes labeled emotional speech and song recordings.
+    \item \textbf{Data Extraction:}
+    \begin{itemize}
+        \item Extract metadata such as labels and identifiers from the audio file names to organize the dataset.
+        \item Create an initial DataFrame to serve as the foundation for further processing.
+    \end{itemize}
+    \item \textbf{Data Augmentation:}
+    \begin{itemize}
+        \item Introduce diversity in the dataset by adding noise and altering the pitch of the audio files.
+        \item Update the DataFrame with these augmented samples to expand the training set.
+    \end{itemize}
+    \item \textbf{Feature Extraction:}
+    \begin{itemize}
+        \item Extract Mel-frequency Cepstral Coefficients (MFCC) from the audio data to capture relevant features.
+        \item Build a final DataFrame containing these extracted features for model training.
+    \end{itemize}
+    \item \textbf{Data Transformation:}
+    \begin{itemize}
+        \item Transform class labels into a non-hot encoded format to prepare them for CNN model training.
+        \item Ensure the dataset is structured and ready for machine learning tasks.
+    \end{itemize}
+    \item \textbf{Model Training:}
+    \begin{itemize}
+        \item Train the CNN model using the processed and transformed data.
+        \item Optimize the model by fine-tuning hyperparameters and evaluating performance.
+    \end{itemize}
+\end{enumerate}
+
+\section{Depression Analysis}
+
+\subsection{Database Utilization}
+The DAIC-WOZ database is used for predicting user depression levels based on vocal features extracted from audio files.
+
+\subsection{Data Preprocessing}
+\begin{itemize}
+    \item \textbf{Audio File Segmentation:}
+    \begin{itemize}
+        \item The audio data is split into two parts: the speaker's segment and the participant's segment.
+        \item The participant's audio segment is further divided into 2-minute duration chunks to standardize the input length for analysis.
+    \end{itemize}
+    \item \textbf{Noise and Pitch Augmentation:}
+    \begin{itemize}
+        \item Noise and pitch variations are added to the audio chunks to prevent overfitting and improve model performance under varying noise conditions.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Feature Extraction}
+The preprocessed audio chunks are converted into MFCC (Mel-frequency Cepstral Coefficients) features. These features serve as inputs for predicting stress or depression levels, as they effectively capture vocal characteristics.
+
+\subsection{Model Selection and Architecture}
+A Convolutional Neural Network (CNN) model is implemented for prediction.
+\begin{itemize}
+    \item \textbf{Input Layer:} Accepts MFCC features with a specified input shape.
+    \item \textbf{Convolutional Layers:} Multiple Conv1D layers are used, each with different filter sizes and padding configurations, followed by ReLU activation.
+    \item \textbf{Batch Normalization:} Ensures stable and faster training by normalizing the outputs of convolutional layers.
+    \item \textbf{Dropout Layers:} Prevent overfitting by randomly disabling a fraction of neurons during training.
+    \item \textbf{MaxPooling Layers:} Reduce dimensionality while retaining key information.
+    \item \textbf{Fully Connected Layer:} Maps the flattened features to the output classes.
+    \item \textbf{Output Layer:} Uses a softmax activation function to output probabilities for each target class.
+\end{itemize}
+
+\section{Website Development Methodology}
+
+\begin{enumerate}
+    \item \textbf{Frontend Development:}
+    \begin{itemize}
+        \item The website is developed using HTML, CSS, and JavaScript to provide an interactive and user-friendly interface.
+        \item The frontend collects responses from users through a structured questionnaire containing 40 questions derived from the DAIC-WOZ dataset.
+    \end{itemize}
+    \item \textbf{Backend Development:}
+    \begin{itemize}
+        \item Python Flask is used for the backend to handle data processing and communication between the frontend and server.
+        \item User responses are saved in audio format for further analysis.
+    \end{itemize}
+    \item \textbf{Audio Data Preprocessing:}
+    \begin{itemize}
+        \item The audio files are split into two durations:
+        \begin{itemize}
+            \item 3-second segments: Used to predict emotion types like calm, angry, disgust, fearful, and others.
+            \item 2-minute chunks: Used for stress and depression level detection.
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Emotion Detection:}
+    \begin{itemize}
+        \item A CNN model is employed to classify emotions based on the 3-second audio segments.
+        \item The output categorizes emotions into predefined types, aiding in understanding the emotional state of the user.
+    \end{itemize}
+    \item \textbf{Depression Detection:}
+    \begin{itemize}
+        \item Another CNN model is used to predict stress levels based on the 2-minute audio chunks.
+        \item The model leverages vocal features extracted from the audio to determine the user's depression level.
+    \end{itemize}
+    \item \textbf{Data Analysis and Diagnosis:}
+    \begin{itemize}
+        \item Extracted data, including emotions and stress levels, is further analyzed to derive meaningful insights.
+        \item These insights are used to perform comprehensive diagnostics and provide personalized feedback or recommendations.
+    \end{itemize}
+    \item \textbf{Integration and Workflow:}
+    \begin{itemize}
+        \item The frontend, backend, and models are seamlessly integrated to enable a smooth user experience.
+        \item The system ensures accurate prediction and robust analysis of emotional and mental health data.
+    \end{itemize}
+\end{enumerate}
