@@ -223,3 +223,18 @@ predictions.json
 *.gz
 *.toc
 *.fdb_latexmk
+
+# Supabase CLI local state
+supabase/.temp/
+
+# Next.js
+/node_modules
+/.pnp
+.pnp.*
+/.next/
+/out/
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+models/tfjs_model/

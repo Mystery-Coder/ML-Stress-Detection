@@ -1,0 +1,4 @@
+project_id = "moodsense"
+
+[functions.cron-cleanup]
+verify_jwt = false
