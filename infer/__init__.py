@@ -1,0 +1,1 @@
+# MoodSense local inference worker

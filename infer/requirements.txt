@@ -1,0 +1,11 @@
+# Local inference worker (Keras + librosa). Python 3.12 venv recommended.
+fastapi
+uvicorn
+librosa
+numpy
+scikit-learn
+joblib
+tensorflow
+pydub
+soundfile
+resampy
