@@ -90,11 +90,11 @@ export function UnlockResults({ testId }: { testId: string }) {
     <div>
       <h1 className="font-[family-name:var(--font-display)] text-2xl text-[#0f172a]">Your emotional profile</h1>
       <p className="mb-6 text-xs text-[#94a3b8]">Sealed client-side · MFCC · 3 s emotion ticks · 2 min depression ticks</p>
-      <div className="mb-8 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {Object.entries(counts).map(([emotion, count]) => (
-          <div key={emotion} className="rounded-lg border border-[#e2e8f0] bg-[#f8fafc] p-2 text-center">
-            <span className="block text-[9px] capitalize text-[#94a3b8]">{emotion}</span>
-            <div className="text-base font-semibold text-[#0f172a]">{count}</div>
+          <div key={emotion} className="rounded-xl border border-[#e2e8f0] bg-white p-4 text-center">
+            <span className="block text-[11px] capitalize text-[#94a3b8]">{emotion}</span>
+            <div className="mt-1 text-2xl font-semibold text-[#0f172a]">{count}</div>
           </div>
         ))}
       </div>

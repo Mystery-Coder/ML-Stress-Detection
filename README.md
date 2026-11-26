@@ -1,6 +1,6 @@
 # MoodSense
 
-Voice screening for emotion and low-mood indicators. The app is **Next.js + Supabase** (email/password auth, private audio storage, user-held encryption for results). A local **Python worker** runs Keras + librosa inference; `/api/analyze` only checks the session, fetches the WAV, and forwards bytes to that worker.
+Voice screening for emotion and low-mood indicators. The app is **Next.js + Supabase** (email/password auth, private audio storage, user-held encryption for results). A **Python worker** runs Keras + librosa inference; `/api/analyze` only checks the session, fetches the WAV, and forwards bytes to that worker.
 
 ## Stack
 
@@ -29,11 +29,11 @@ Auth is **email + password only** (no OAuth). Enable Email in the Supabase dashb
 
 ## Scripts
 
-| Command | Purpose |
-|---|---|
-| `npm run rls-test` | Owner vs other-user RLS denial |
-| `python scripts/parity_test.py` then `npm run parity` | MFCC JS vs librosa |
-| `python scripts/run_models.py` | Offline Keras folder eval (optional) |
+| Command                                               | Purpose                              |
+| ----------------------------------------------------- | ------------------------------------ |
+| `npm run rls-test`                                    | Owner vs other-user RLS denial       |
+| `python scripts/parity_test.py` then `npm run parity` | MFCC JS vs librosa                   |
+| `python scripts/run_models.py`                        | Offline Keras folder eval (optional) |
 
 Retention: `supabase/functions/cron-cleanup` deletes audio older than 30 days; sealed results stay.
 

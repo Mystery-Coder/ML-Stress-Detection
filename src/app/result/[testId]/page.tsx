@@ -14,7 +14,7 @@ export default async function ResultPage({ params }: { params: Promise<{ testId:
   return (
     <>
       <Nav email={user?.email} />
-      <main className="mx-auto max-w-4xl px-8 py-10">
+      <main className="mx-auto w-full max-w-5xl px-6 py-10 sm:px-8 lg:px-10">
         <UnlockResults testId={testId} />
       </main>
     </>
